@@ -82,5 +82,5 @@ deploy:
     repo: https://github.com/JasonWang0911/JasonWang0911.github.io.git
     branch: master
   - type: git
-    repo: https://gitee.com/JasonWang0911/JasonWang0911.github.io.git
+    repo: https://gitee.com/JasonWang0911/JasonWang0911.git
     branch: master
