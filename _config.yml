@@ -78,6 +78,9 @@ theme: black-blue
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
-  repo: https://github.com/JasonWang0911/JasonWang0911.github.io.git
-  branch: master
+  - type: git
+    repo: https://github.com/JasonWang0911/JasonWang0911.github.io.git
+    branch: master
+  - type: git
+    repo: https://gitee.com/JasonWang0911/JasonWang0911.github.io.git
+    branch: master
