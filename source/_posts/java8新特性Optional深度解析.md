@@ -18,7 +18,7 @@ public class WeiLaiCar implements ICar {
     Integer wheels = new Integer(4);
 ｝
 ```
-##Api中提供的4种optional
+## Api中提供的4种optional
 最核心的当属Optional对象，泛型的引入支持了所有对象类型，又增加对常用场景下的double\int\long进行扩展。重点介绍一下Optional对象的方法其他三个类似。
 
 . public final class Optional<T> {
@@ -33,7 +33,7 @@ public class WeiLaiCar implements ICar {
 @FunctionalInterface
 Predicate\Consumer\Supplier三个接口都是函数式接口
 ```
-###静态方法of
+### 静态方法of
 ```java
 private Optional() {
 	this.value = null;
@@ -61,7 +61,7 @@ java.util.NoSuchElementException: No value present
 ```
 2、of(x)传入的对象不能为null，而ofNullable(x)是支持传入null的对象，一般用这两个比较多。
 
-####present 方法
+#### present 方法
 isPresent是用来判断optional中对象是否为null，ifPresent的参数是当对象不为null时执行的lamdba表达式。
 
 ```java
@@ -88,7 +88,7 @@ optional.ifPresent( a -> Optional.ofNullable(a.getCar()).ifPresent(b -> pringTes
 //car:false
 //第二级ifPresent的car对象是存在的，所以第二级的表达式执行了
 ```
-####map 方法
+#### map 方法
 源码提供了两种map和flatMap。
 
 . map方法的参数是个当包含的对象不为null时才执行的lambda表达式，返回该表达式执行结果的封装optional对象，同理支持链式调用，逐层深入和递归递进很像；
@@ -144,7 +144,7 @@ Optional opt5 = optional.flatMap(a -> Optional.of(a.getCar())).flatMap(b -> Opti
 pringTest(opt5);
 //Optional[4];
 ```
-####filter 方法
+#### filter 方法
 
 源码如下
 
@@ -172,7 +172,7 @@ Optional result1 = optional.filter( a -> a.getStringList() != null);
 pringTest(result1.get());
 //java.util.NoSuchElementException: No value present
 ```
-####orElse 方法
+#### orElse 方法
 
 Api提供了三个方法。
 
@@ -214,7 +214,7 @@ pringTest(optional.orElseGet(() -> new Java8OptionalTest()));
 pringTest(optional.orElseThrow(() -> new RuntimeException("orElseThrow")));
 //java.lang.RuntimeException: orElseThrow
 ```
-###总结
+### 总结
    官方推出Optional绝不会就是替大家判断一下null，filter\map\orElse这三种使用场景是比较容易想到的，很多业务场景需要慢慢摸索使用。多函数式的用法需要好好掌握，技术发展是非常快速的。
    
    后面会专门开一篇讲函数式和Lambda表达式用法，保持好奇心关注我的博客。
