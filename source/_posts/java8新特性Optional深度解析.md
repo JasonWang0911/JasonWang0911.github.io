@@ -1,15 +1,15 @@
 ---
 title: java8新特性Optional深度解析
 ---
-```
+```javascript
 本文以jdk1.8.0_111源码为例
 ```
-```
+```javascript
 public final class Optional<T> {}
 ```
 Optional是一个为了解决NullPointerException设计而生可以包含对象也可以包含空的容器对象。封装了很多对空处理的方法也增加了filter、map这样的检索利器，其中函数式编程会有种炫酷到爆的感觉。
 基础测试用例对象：
-```
+```javascript
 public class Java8OptionalTest {
     List<String> stringList = null;
     ICar car = new WeiLaiCar();
@@ -29,18 +29,18 @@ public class WeiLaiCar implements ICar {
 
 . public final class OptionalLong {
 
-```
+```javascript
 @FunctionalInterface
 Predicate\Consumer\Supplier三个接口都是函数式接口
 ```
 ###静态方法of
-```
+```javascript
 private Optional() {
 	this.value = null;
 }
 ```
 构造方法被private，不能new但提供了of这样的静态方法去初始化类；
-```
+```javascript
 public static <T> Optional<T> of(T value) {
     return new Optional<>(value);
 }
@@ -56,7 +56,7 @@ public static<T> Optional<T> empty() {
 }
 ```
 1、empty支持你去创建一个空的optional类，这样的类直接get()会报错：
-```
+```javascript
 java.util.NoSuchElementException: No value present
 ```
 2、of(x)传入的对象不能为null，而ofNullable(x)是支持传入null的对象，一般用这两个比较多。
@@ -64,7 +64,7 @@ java.util.NoSuchElementException: No value present
 ####present 方法
 isPresent是用来判断optional中对象是否为null，ifPresent的参数是当对象不为null时执行的lamdba表达式。
 
-```angular2html
+```javascript
 public boolean isPresent() {
     return value != null;
 }
@@ -74,7 +74,7 @@ public void ifPresent(Consumer<? super T> consumer) {
 }
 ```
 示例详解介绍了ifPresent特性：
-```angular2html
+```javascript
 Java8OptionalTest test = new Java8OptionalTest();
 Optional<Java8OptionalTest> optional = Optional.of(test);
 
@@ -95,7 +95,7 @@ optional.ifPresent( a -> Optional.ofNullable(a.getCar()).ifPresent(b -> pringTes
 
 . flatMap区别在于lambda表达式的返回结果必须主动包裹Optinoal，否则报错
 
-```angular2html
+```javascript
 public<U> Optional<U> map(Function<? super T, ? extends U> mapper) {
     Objects.requireNonNull(mapper);
     if (!isPresent())
@@ -115,7 +115,7 @@ public<U> Optional<U> flatMap(Function<? super T, Optional<U>> mapper) {
 ```
 测试示例：
 
-```angular2html
+```javascript
 Java8OptionalTest test = new Java8OptionalTest();
 Optional<Java8OptionalTest> optional = Optional.of(test);
 
@@ -148,7 +148,7 @@ pringTest(opt5);
 
 源码如下
 
-```angular2html
+```javascript
 public Optional<T> filter(Predicate<? super T> predicate) {
     Objects.requireNonNull(predicate);
     if (!isPresent())
@@ -160,7 +160,7 @@ public Optional<T> filter(Predicate<? super T> predicate) {
 filter方法传入一个断言语句条件的lambda表达式，返回一个原对象的optional包装，所以支持链式调用；只要记住这三点你便掌握如何使用了。
 
 看下面的例子：
-```angular2html
+```javascript
 Java8OptionalTest test = new Java8OptionalTest();
 
 Optional<Java8OptionalTest> optional = Optional.of(test);
@@ -182,7 +182,7 @@ Api提供了三个方法。
 
 . orElseThrow 也是传入lambda表达式，但是表达式是抛出异常
 
-```angular2html
+```javascript
 public T orElse(T other) {
     return value != null ? value : other;
 }
@@ -201,7 +201,7 @@ public <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSuppli
 ```
 测试用例如下：
 
-```angular2html
+```javascript
 Java8OptionalTest one = null;
 Java8OptionalTest test = new Java8OptionalTest();
 Optional<Java8OptionalTest> optional = Optional.ofNullable(one);
