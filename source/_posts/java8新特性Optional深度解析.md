@@ -142,7 +142,7 @@ pringTest(opt4);
 //Optional[com.ts.util.optional.WeiLaiCar@5d6f64b1]
 Optional opt5 = optional.flatMap(a -> Optional.of(a.getCar())).flatMap(b -> Optional.ofNullable(b.getWheelCount()));
 pringTest(opt5);
-//Optional[4]
+//Optional[4];
 ```
 ####filter 方法
 
