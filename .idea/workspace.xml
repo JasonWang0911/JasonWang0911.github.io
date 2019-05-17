@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ae70e02-aa23-45f0-8a30-d07f1aab4c60" name="Default Changelist" comment="Go 语言递归函数">
-      <change afterPath="$PROJECT_DIR$/source/_posts/Go语言并发/20190517121104.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/Go语言并发/20190517121555.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/Go语言并发/20190517121925.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/Go语言并发/20190517122316.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/Go语言并发/20190517122508.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/_posts/Go语言并发/20190517122817.jpg" afterDir="false" />
+    <list default="true" id="9ae70e02-aa23-45f0-8a30-d07f1aab4c60" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -47,7 +41,7 @@
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="313">
-                <caret line="166" column="37" lean-forward="true" selection-start-line="166" selection-end-line="167" />
+                <caret line="166" column="37" selection-start-line="166" selection-end-line="167" />
               </first_editor>
               <second_editor />
             </state>
@@ -58,8 +52,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/Go语言并发.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="408">
-                <caret line="265" selection-start-line="265" selection-end-line="265" />
+              <first_editor relative-caret-position="370">
+                <caret line="305" column="32" selection-start-line="305" selection-start-column="32" selection-end-line="305" selection-end-column="32" />
                 <folding>
                   <element signature="e#884#967#0" />
                 </folding>
@@ -238,7 +232,7 @@
       <workItem from="1557415465994" duration="1208000" />
       <workItem from="1557418055110" duration="4482000" />
       <workItem from="1557712004131" duration="537000" />
-      <workItem from="1557926348274" duration="2901000" />
+      <workItem from="1557926348274" duration="3252000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1555645759065</created>
@@ -366,11 +360,18 @@
       <option name="project" value="LOCAL" />
       <updated>1556282412185</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Go 语言并发">
+      <created>1558067687143</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1558067687144</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38528000" />
+    <option name="totallyTimeSpent" value="38879000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -383,7 +384,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1933" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29256722" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -412,7 +412,8 @@
     <MESSAGE value="切换主题" />
     <MESSAGE value="java8新特性Optional深度解析" />
     <MESSAGE value="Go 语言递归函数" />
-    <option name="LAST_COMMIT_MESSAGE" value="Go 语言递归函数" />
+    <MESSAGE value="Go 语言并发" />
+    <option name="LAST_COMMIT_MESSAGE" value="Go 语言并发" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/source/_posts/Blog.md" />
@@ -467,7 +468,7 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="313">
-            <caret line="166" column="37" lean-forward="true" selection-start-line="166" selection-end-line="167" />
+            <caret line="166" column="37" selection-start-line="166" selection-end-line="167" />
           </first_editor>
           <second_editor />
         </state>
@@ -476,8 +477,8 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/Go语言并发.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="408">
-            <caret line="265" selection-start-line="265" selection-end-line="265" />
+          <first_editor relative-caret-position="370">
+            <caret line="305" column="32" selection-start-line="305" selection-start-column="32" selection-end-line="305" selection-end-column="32" />
             <folding>
               <element signature="e#884#967#0" />
             </folding>
