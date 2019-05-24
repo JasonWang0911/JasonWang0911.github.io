@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ae70e02-aa23-45f0-8a30-d07f1aab4c60" name="Default Changelist" comment="">
+    <list default="true" id="9ae70e02-aa23-45f0-8a30-d07f1aab4c60" name="Default Changelist" comment="Go 语言并发">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -28,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/Go 语言递归函数.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="2546">
+              <first_editor relative-caret-position="802">
                 <caret line="134" column="3" selection-start-line="134" selection-start-column="3" selection-end-line="134" selection-end-column="3" />
               </first_editor>
               <second_editor />
@@ -40,8 +40,8 @@
         <entry file="file://$PROJECT_DIR$/source/_posts/Go语言接口.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="313">
-                <caret line="166" column="37" selection-start-line="166" selection-end-line="167" />
+              <first_editor relative-caret-position="333">
+                <caret line="167" selection-start-line="167" selection-end-line="167" />
               </first_editor>
               <second_editor />
             </state>
@@ -49,10 +49,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/source/_posts/35个可以提高效率的Java代码小技巧.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="332">
+                <caret line="380" column="20" lean-forward="true" selection-start-line="380" selection-start-column="20" selection-end-line="380" selection-end-column="20" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/_posts/Go语言并发.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="370">
+              <first_editor relative-caret-position="5719">
                 <caret line="305" column="32" selection-start-line="305" selection-start-column="32" selection-end-line="305" selection-end-column="32" />
                 <folding>
                   <element signature="e#884#967#0" />
@@ -116,6 +128,7 @@
         <option value="$PROJECT_DIR$/source/_posts/语言接口.md" />
         <option value="$PROJECT_DIR$/source/_posts/Go语言接口.md" />
         <option value="$PROJECT_DIR$/source/_posts/Go语言并发.md" />
+        <option value="$PROJECT_DIR$/source/_posts/35个可以提高效率的Java代码小技巧.md" />
       </list>
     </option>
   </component>
@@ -131,6 +144,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -170,7 +184,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -232,7 +245,8 @@
       <workItem from="1557415465994" duration="1208000" />
       <workItem from="1557418055110" duration="4482000" />
       <workItem from="1557712004131" duration="537000" />
-      <workItem from="1557926348274" duration="3252000" />
+      <workItem from="1557926348274" duration="4105000" />
+      <workItem from="1558317379435" duration="4078000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1555645759065</created>
@@ -371,7 +385,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38879000" />
+    <option name="totallyTimeSpent" value="43810000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -384,6 +398,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1933" height="1053" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29256722" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -397,8 +412,8 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32899022" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49024776" visible="true" weight="0.43095767" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5097522" side_tool="true" visible="true" weight="0.43095767" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4897206" visible="true" weight="0.43095767" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5102794" side_tool="true" visible="true" weight="0.43095767" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -419,20 +434,11 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/Blog.md" />
     <entry file="file://$PROJECT_DIR$/source/_posts/hello-world.md" />
     <entry file="file://$PROJECT_DIR$/source/_posts/Go语言接口1.md" />
+    <entry file="file://$PROJECT_DIR$/source/_posts/语言并发.md" />
     <entry file="file://$PROJECT_DIR$/_config.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="741">
           <caret line="39" column="12" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/source/_posts/Go 语言递归函数.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="2546">
-            <caret line="134" column="3" selection-start-line="134" selection-start-column="3" selection-end-line="134" selection-end-column="3" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -456,19 +462,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/_posts/语言并发.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/Go语言接口.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="313">
-            <caret line="166" column="37" selection-start-line="166" selection-end-line="167" />
+          <first_editor relative-caret-position="333">
+            <caret line="167" selection-start-line="167" selection-end-line="167" />
           </first_editor>
           <second_editor />
         </state>
@@ -477,11 +475,31 @@
     <entry file="file://$PROJECT_DIR$/source/_posts/Go语言并发.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="370">
+          <first_editor relative-caret-position="5719">
             <caret line="305" column="32" selection-start-line="305" selection-start-column="32" selection-end-line="305" selection-end-column="32" />
             <folding>
               <element signature="e#884#967#0" />
             </folding>
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/Go 语言递归函数.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="802">
+            <caret line="134" column="3" selection-start-line="134" selection-start-column="3" selection-end-line="134" selection-end-column="3" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/35个可以提高效率的Java代码小技巧.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="332">
+            <caret line="380" column="20" lean-forward="true" selection-start-line="380" selection-start-column="20" selection-end-line="380" selection-end-column="20" />
           </first_editor>
           <second_editor />
         </state>
