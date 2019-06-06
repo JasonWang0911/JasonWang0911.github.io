@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="L6Lm9d5Crl">
+  
+  
+  
+  
+  <title>java8新特性Optional深度解析 | Jason Blog 主页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1本文以jdk1.8.0_111源码为例 1public final class Optional&amp;lt;T&amp;gt; &amp;#123;&amp;#125; Optional是一个为了解决NullPointerException设计而生可以包含对象也可以包含空的容器对象。封装了很多对空处理的方法也增加了filter、map这样的检索利器，其中函数式编程会有种炫酷到爆的感觉。基础测试用例对象：1234567pub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java8新特性Optional深度解析">
+<meta property="og:url" content="http://yoursite.com/2019/06/04/java8新特性Optional深度解析/index.html">
+<meta property="og:site_name" content="Jason Blog 主页">
+<meta property="og:description" content="1本文以jdk1.8.0_111源码为例 1public final class Optional&amp;lt;T&amp;gt; &amp;#123;&amp;#125; Optional是一个为了解决NullPointerException设计而生可以包含对象也可以包含空的容器对象。封装了很多对空处理的方法也增加了filter、map这样的检索利器，其中函数式编程会有种炫酷到爆的感觉。基础测试用例对象：1234567pub">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-04T07:08:08.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java8新特性Optional深度解析">
+<meta name="twitter:description" content="1本文以jdk1.8.0_111源码为例 1public final class Optional&amp;lt;T&amp;gt; &amp;#123;&amp;#125; Optional是一个为了解决NullPointerException设计而生可以包含对象也可以包含空的容器对象。封装了很多对空处理的方法也增加了filter、map这样的检索利器，其中函数式编程会有种炫酷到爆的感觉。基础测试用例对象：1234567pub">
+  
+    <link rel="alternative" href="/atom.xml" title="Jason Blog 主页" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/Avatar.jpg" class="js-avatar">
+            
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Jason</a></h1>
+        </hgroup>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="local-search-input" placeholder="搜索一下" autocomplete="off">
+            </form>
+            <div id="local-search-result"></div>
+        
+        
+            <script type="text/javascript">
+                (function() {
+                    'use strict';
+                    function getMatchData(keyword, data) {
+                        var matchData = [];
+                        for(var i =0;i<data.length;i++){
+                            if(data[i].title.toLowerCase().indexOf(keyword)>=0) 
+                                matchData.push(data[i])
+                        }
+                        return matchData;
+                    }
+                    var $input = $('#local-search-input');
+                    var $resultContent = $('#local-search-result');
+                    $input.keyup(function(){
+                        $.ajax({
+                            url: '/search.json',
+                            dataType: "json",
+                            success: function( json ) {
+                                var str='<ul class=\"search-result-list\">';                
+                                var keyword = $input.val().trim().toLowerCase();
+                                $resultContent.innerHTML = "";
+                                if ($input.val().trim().length <= 0) {
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                }
+                                var results = getMatchData(keyword, json);
+                                if(results.length === 0){
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                } 
+                                for(var i =0; i<results.length; i++){
+                                    str += "<li><a href='"+ results[i].url +"' class='search-result-title'>"+ results[i].title +"</a></li>";
+                                }
+                                str += "</ul>";
+                                $resultContent.empty();
+                                $resultContent.append(str);
+                                $('#switch-area').hide();
+                            }
+                        });
+                    });
+                })();
+            </script>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/categories/开发工具/">玩转开发工具</a></li>
+                        
+                            <li><a href="/categories/digital">玩转数码</a></li>
+                        
+                            <li><a href="/categories/algorithm">算法学习</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/JasonWang0911/" title="github">github</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        
+                    </div>
+                </section>
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/baidu_21483933">csdn</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://segmentfault.com/blog/maocg_web">segmentfault</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jianshu.com/users/eb37ef89c746/latest_articles">简书</a>
+                    
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱动漫,爱游戏,爱编程,爱运动,爱的太多了!</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Jason</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/Avatar.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Jason</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/categories/开发工具/">玩转开发工具</a></li>
+                
+                    <li><a href="/categories/digital">玩转数码</a></li>
+                
+                    <li><a href="/categories/algorithm">算法学习</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/JasonWang0911/" title="github">github</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-java8新特性Optional深度解析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/06/04/java8新特性Optional深度解析/" class="article-date">
+      <time datetime="2019-06-04T07:08:08.019Z" itemprop="datePublished">2019-06-04</time>
+</a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java8新特性Optional深度解析
+    </h1>
+  
+
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本文以jdk1.8.0_111源码为例</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Optional</span>&lt;<span class="title">T</span>&gt; </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>Optional是一个为了解决NullPointerException设计而生可以包含对象也可以包含空的容器对象。封装了很多对空处理的方法也增加了filter、map这样的检索利器，其中函数式编程会有种炫酷到爆的感觉。<br>基础测试用例对象：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Java8OptionalTest</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; stringList = <span class="keyword">null</span>;</span><br><span class="line">    ICar car = <span class="keyword">new</span> WeiLaiCar();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeiLaiCar</span> <span class="keyword">implements</span> <span class="title">ICar</span> </span>&#123;</span><br><span class="line">    Integer wheels = <span class="keyword">new</span> Integer(<span class="number">4</span>);</span><br><span class="line">｝</span><br></pre></td></tr></table></figure></p>
+<h2 id="Api中提供的4种optional"><a href="#Api中提供的4种optional" class="headerlink" title="Api中提供的4种optional"></a>Api中提供的4种optional</h2><p>最核心的当属Optional对象，泛型的引入支持了所有对象类型，又增加对常用场景下的double\int\long进行扩展。重点介绍一下Optional对象的方法其他三个类似。</p>
+<p>. public final class Optional<t> {</t></p>
+<p>. public final class OptionalDouble {</p>
+<p>. public final class OptionalInt {</p>
+<p>. public final class OptionalLong {</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line">Predicate\Consumer\Supplier三个接口都是函数式接口</span><br></pre></td></tr></table></figure>
+<h3 id="静态方法of"><a href="#静态方法of" class="headerlink" title="静态方法of"></a>静态方法of</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">Optional</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.value = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>构造方法被private，不能new但提供了of这样的静态方法去初始化类；<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Optional&lt;T&gt; <span class="title">of</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Optional&lt;&gt;(value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Optional&lt;T&gt; <span class="title">ofNullable</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value == <span class="keyword">null</span> ? empty() : of(value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Optional&lt;T&gt; <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    Optional&lt;T&gt; t = (Optional&lt;T&gt;) EMPTY;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>1、empty支持你去创建一个空的optional类，这样的类直接get()会报错：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.util.NoSuchElementException: No value present</span><br></pre></td></tr></table></figure></p>
+<p>2、of(x)传入的对象不能为null，而ofNullable(x)是支持传入null的对象，一般用这两个比较多。</p>
+<h4 id="present-方法"><a href="#present-方法" class="headerlink" title="present 方法"></a>present 方法</h4><p>isPresent是用来判断optional中对象是否为null，ifPresent的参数是当对象不为null时执行的lamdba表达式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPresent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value != <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ifPresent</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; consumer)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value != <span class="keyword">null</span>)</span><br><span class="line">        consumer.accept(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>示例详解介绍了ifPresent特性：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Java8OptionalTest test = <span class="keyword">new</span> Java8OptionalTest();</span><br><span class="line">Optional&lt;Java8OptionalTest&gt; optional = Optional.of(test);</span><br><span class="line"></span><br><span class="line">pringTest(optional.isPresent());</span><br><span class="line"><span class="comment">//true</span></span><br><span class="line">optional.ifPresent( a -&gt; pringTest(a.getCar().getClass().getName()));</span><br><span class="line"><span class="comment">//com.ts.util.optional.WeiLaiCar</span></span><br><span class="line">optional.ifPresent( a -&gt; Optional.ofNullable(a.getStringList()).ifPresent(b -&gt; pringTest(<span class="string">"StringList:"</span> + (b == <span class="keyword">null</span>))));</span><br><span class="line"><span class="comment">//第一级的ifPresent是存在test对象，所以执行了lambda表达式，而第二级的ifPresent的stringList是null，所以没有执行表达式</span></span><br><span class="line">optional.ifPresent( a -&gt; Optional.ofNullable(a.getCar()).ifPresent(b -&gt; pringTest(<span class="string">"car:"</span> + (b == <span class="keyword">null</span>))));</span><br><span class="line"><span class="comment">//car:false</span></span><br><span class="line"><span class="comment">//第二级ifPresent的car对象是存在的，所以第二级的表达式执行了</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="map-方法"><a href="#map-方法" class="headerlink" title="map 方法"></a>map 方法</h4><p>源码提供了两种map和flatMap。</p>
+<p>. map方法的参数是个当包含的对象不为null时才执行的lambda表达式，返回该表达式执行结果的封装optional对象，同理支持链式调用，逐层深入和递归递进很像；</p>
+<p>. flatMap区别在于lambda表达式的返回结果必须主动包裹Optinoal，否则报错</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span>&lt;U&gt; Optional&lt;U&gt; <span class="title">map</span><span class="params">(Function&lt;? <span class="keyword">super</span> T, ? extends U&gt; mapper)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(mapper);</span><br><span class="line">    <span class="keyword">if</span> (!isPresent())</span><br><span class="line">        <span class="keyword">return</span> empty();</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Optional.ofNullable(mapper.apply(value));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span>&lt;U&gt; Optional&lt;U&gt; <span class="title">flatMap</span><span class="params">(Function&lt;? <span class="keyword">super</span> T, Optional&lt;U&gt;&gt; mapper)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(mapper);</span><br><span class="line">    <span class="keyword">if</span> (!isPresent())</span><br><span class="line">        <span class="keyword">return</span> empty();</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.requireNonNull(mapper.apply(value));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Java8OptionalTest test = <span class="keyword">new</span> Java8OptionalTest();</span><br><span class="line">Optional&lt;Java8OptionalTest&gt; optional = Optional.of(test);</span><br><span class="line"></span><br><span class="line">Optional opt1 = optional.map( a -&gt; a.getCar());</span><br><span class="line">pringTest(opt1.get());</span><br><span class="line"><span class="comment">//com.ts.util.optional.WeiLaiCar@5d6f64b1</span></span><br><span class="line"><span class="keyword">int</span> wheel = <span class="number">0</span>;<span class="comment">//传统null判断写法</span></span><br><span class="line"><span class="keyword">if</span>(test != <span class="keyword">null</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(test.getCar() != <span class="keyword">null</span>)&#123;<span class="comment">//实际业务里面层级也许会超过3层</span></span><br><span class="line">        wheel = test.getCar().getWheelCount();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">pringTest(<span class="string">"传统:"</span>+wheel);</span><br><span class="line"><span class="comment">//传统:4</span></span><br><span class="line">Optional opt2 = optional.map( a -&gt; a.getCar()).map(b -&gt; b.getWheelCount());<span class="comment">//Optional支持下的写法</span></span><br><span class="line">pringTest(<span class="string">"optinal:"</span>+opt2.get());</span><br><span class="line"><span class="comment">//optinal:4</span></span><br><span class="line">Optional opt3 = optional.map( a -&gt; a.getStringList()).map(b -&gt; b.size());</span><br><span class="line">pringTest(opt3);</span><br><span class="line"><span class="comment">//Optional.empty</span></span><br><span class="line"></span><br><span class="line">Optional opt4 = optional.flatMap(a -&gt; Optional.of(a.getCar()));<span class="comment">//主动包裹Optional对象</span></span><br><span class="line">pringTest(opt4);</span><br><span class="line"><span class="comment">//Optional[com.ts.util.optional.WeiLaiCar@5d6f64b1]</span></span><br><span class="line">Optional opt5 = optional.flatMap(a -&gt; Optional.of(a.getCar())).flatMap(b -&gt; Optional.ofNullable(b.getWheelCount()));</span><br><span class="line">pringTest(opt5);</span><br><span class="line"><span class="comment">//Optional[4];</span></span><br></pre></td></tr></table></figure>
+<h4 id="filter-方法"><a href="#filter-方法" class="headerlink" title="filter 方法"></a>filter 方法</h4><p>源码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Optional&lt;T&gt; <span class="title">filter</span><span class="params">(Predicate&lt;? <span class="keyword">super</span> T&gt; predicate)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(predicate);</span><br><span class="line">    <span class="keyword">if</span> (!isPresent())</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> predicate.test(value) ? <span class="keyword">this</span> : empty();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>filter方法传入一个断言语句条件的lambda表达式，返回一个原对象的optional包装，所以支持链式调用；只要记住这三点你便掌握如何使用了。</p>
+<p>看下面的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Java8OptionalTest test = <span class="keyword">new</span> Java8OptionalTest();</span><br><span class="line"></span><br><span class="line">Optional&lt;Java8OptionalTest&gt; optional = Optional.of(test);</span><br><span class="line"></span><br><span class="line">Optional result = optional.filter( a -&gt; a.getCar() != <span class="keyword">null</span>).filter( b -&gt; b.getClass().getName() != <span class="keyword">null</span>);</span><br><span class="line">pringTest(result.isPresent()? result.get().getClass().getName(): result.isPresent());</span><br><span class="line"><span class="comment">//com.ts.util.Java8OptionalTest</span></span><br><span class="line">Optional result1 = optional.filter( a -&gt; a.getStringList() != <span class="keyword">null</span>);</span><br><span class="line">pringTest(result1.get());</span><br><span class="line"><span class="comment">//java.util.NoSuchElementException: No value present</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="orElse-方法"><a href="#orElse-方法" class="headerlink" title="orElse 方法"></a>orElse 方法</h4><p>Api提供了三个方法。</p>
+<p>. orElse 当optional内对象为null就返回这个参数，比较像很多默认值设置；</p>
+<p>. orElseGet 基本同orElse，区别是传入参数支持lambda表达式，返回的就是表达式执行结果；</p>
+<p>. orElseThrow 也是传入lambda表达式，但是表达式是抛出异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">orElse</span><span class="params">(T other)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value != <span class="keyword">null</span> ? value : other;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">orElseGet</span><span class="params">(Supplier&lt;? extends T&gt; other)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value != <span class="keyword">null</span> ? value : other.get();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;X extends Throwable&gt; <span class="function">T <span class="title">orElseThrow</span><span class="params">(Supplier&lt;? extends X&gt; exceptionSupplier)</span> <span class="keyword">throws</span> X </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (value != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> exceptionSupplier.get();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试用例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Java8OptionalTest one = <span class="keyword">null</span>;</span><br><span class="line">Java8OptionalTest test = <span class="keyword">new</span> Java8OptionalTest();</span><br><span class="line">Optional&lt;Java8OptionalTest&gt; optional = Optional.ofNullable(one);</span><br><span class="line">pringTest(optional);</span><br><span class="line"><span class="comment">//Optional.empty</span></span><br><span class="line">pringTest(optional.orElse(test));</span><br><span class="line"><span class="comment">//com.ts.util.Java8OptionalTest@5197848c</span></span><br><span class="line">pringTest(optional.orElseGet(() -&gt; <span class="keyword">new</span> Java8OptionalTest()));</span><br><span class="line"><span class="comment">//com.ts.util.Java8OptionalTest@5d6f64b1</span></span><br><span class="line">pringTest(optional.orElseThrow(() -&gt; <span class="keyword">new</span> RuntimeException(<span class="string">"orElseThrow"</span>)));</span><br><span class="line"><span class="comment">//java.lang.RuntimeException: orElseThrow</span></span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>   官方推出Optional绝不会就是替大家判断一下null，filter\map\orElse这三种使用场景是比较容易想到的，很多业务场景需要慢慢摸索使用。多函数式的用法需要好好掌握，技术发展是非常快速的。</p>
+<p>   后面会专门开一篇讲函数式和Lambda表达式用法，保持好奇心关注我的博客。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2019/06/04/java8新特性Optional深度解析/">java8新特性Optional深度解析</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Jason 的个人博客">Jason</a></p>
+        <p><span>发布时间:</span>2019年06月04日 - 15时08分</p>
+        <p><span>最后更新:</span>2019年06月04日 - 15时08分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2019/06/04/java8新特性Optional深度解析/" title="java8新特性Optional深度解析">http://yoursite.com/2019/06/04/java8新特性Optional深度解析/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2019/06/04/java8新特性Optional深度解析/　　作者: Jason" title></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2019/06/06/Go 语言递归函数/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Go 语言递归函数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/31/RabbiMQ原理与SpringBoot使用/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">RabbiMQ原理与SpringBoot使用</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Api中提供的4种optional"><span class="toc-number">1.</span> <span class="toc-text">Api中提供的4种optional</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态方法of"><span class="toc-number">1.1.</span> <span class="toc-text">静态方法of</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#present-方法"><span class="toc-number">1.1.1.</span> <span class="toc-text">present 方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#map-方法"><span class="toc-number">1.1.2.</span> <span class="toc-text">map 方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#filter-方法"><span class="toc-number">1.1.3.</span> <span class="toc-text">filter 方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#orElse-方法"><span class="toc-number">1.1.4.</span> <span class="toc-text">orElse 方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.2.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <section class="changyan" id="comments">
+  <!--<div id="uyan_frame"></div>-->
+  <div id="SOHUCS"></div>
+  <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js"></script>
+  <script type="text/javascript">
+    window.changyan.api.config({
+      appid: 'xxxx',
+      conf: 'xxxxxxxxx'
+    });
+  </script>
+</section>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2019/06/06/Go 语言递归函数/" title="上一篇: Go 语言递归函数">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2019/05/31/RabbiMQ原理与SpringBoot使用/" title="下一篇: RabbiMQ原理与SpringBoot使用">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/06/06/SpringBoot统一异常处理/">SpringBoot统一异常处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/06/Go 语言递归函数/">Go 语言递归函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/04/java8新特性Optional深度解析/">java8新特性Optional深度解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/31/RabbiMQ原理与SpringBoot使用/">RabbiMQ原理与SpringBoot使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/24/35个可以提高效率的Java代码小技巧/">35个可以提高效率的Java代码小技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/17/Go语言并发/">Go语言并发</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/10/Go语言接口/">Go语言接口</a></li></ul>
+    
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2019 Jason
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo &nbsp;&nbsp;</a><a href="https://github.com/maochunguang" target="_blank">Blog</a> by tommy
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 1;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'xxxxx', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?xxxxxx";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
